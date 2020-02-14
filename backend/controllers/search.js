@@ -1,19 +1,15 @@
 const User = require('../models/user');
 
 exports.getResult = async (req, res) => {
-    const { q } = req.query;
+    const { q: username } = req.query;
 
-    if (!q) {
-        return res.status(201).json({ message: "Not found!" })
+    if (!username) {
+        return res.status(201).json({
+            message: "Missing q parameter!"
+        });
     }
 
-    const users = await User.find({ username: q })
+    const results = await User.find({ username }) || [];
 
-    if (users.length !== 0) {
-        return res.status(201).json({ users });
-    }
-
-    return res.status(201).json({
-        message: "Not found!"
-    })
+    return res.status(201).json({ results });
 }
