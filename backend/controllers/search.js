@@ -5,7 +5,7 @@ exports.getResult = async (req, res) => {
 
     if (!username) {
         return res.status(201).json({
-            message: "Missing q parameter!"
+            detail: "Missing parameter: q"
         });
     }
 
