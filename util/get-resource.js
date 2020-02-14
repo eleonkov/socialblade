@@ -10,14 +10,7 @@ const getResource = async url => {
     return res.json();
 };
 
-const _transformIGUserData = (data) => {
-    const { edge_followed_by, username } = data.graphql.user;
-
-    return {
-        username: username,
-        followers: edge_followed_by.count
-    };
-};
+const _transformIGUserData = (data) => ({ ...data.graphql.user });
 
 const getIGUserData = async username => {
     const userData = await getResource(`https://www.instagram.com/${username}?__a=1`);

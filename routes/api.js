@@ -4,15 +4,11 @@ const instagramController = require('../controllers/instagram');
 router.get('/', (req, res) => res.json({ status: "API Its Working" }));
 
 router.route('/instagram')
-    .post(instagramController.postAddUser)
+    .get(instagramController.getUsers)
+    .post(instagramController.postAddUser);
 
-
-// router.route('/contacts')
-//     .get(contactController.index)
-//     .post(contactController.new);
-
-// router.route('/contacts/:contact_id')
-//     .get(contactController.view)
+router.route('/instagram/:username')
+    .get(instagramController.getUser);
 //     .patch(contactController.update)
 //     .put(contactController.update)
 //     .delete(contactController.delete)
