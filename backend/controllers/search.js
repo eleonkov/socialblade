@@ -4,9 +4,7 @@ exports.getResult = async (req, res) => {
     const { q } = req.query;
 
     if (!q) {
-        return res.status(201).json({
-            message: "Not found!"
-        })
+        return res.status(201).json({ message: "Not found!" })
     }
 
     const users = await User.find({ username: q })
