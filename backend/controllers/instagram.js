@@ -1,22 +1,28 @@
 const User = require('../models/user');
 const getIGUserData = require('../util/get-resource');
 
-exports.getUsers = async (req, res) => {
-    const user = await User.find({ account_type: 'instagram' }).limit(10);
+exports.getUser = async (req, res) => {
+    const { username } = req.params;
+    const results = await User.find({ username }) || [];
 
-    if (user.length !== 0) {
-        return res.status(201).json(user);
-    }
+    return res.status(201).json({ results });
+}
+
+exports.getUsers = async (req, res) => {
+    const account_type = 'instagram';
+    const results = await User.find({ account_type }).limit(10) || [];
+
+    return res.status(201).json({ results });
 }
 
 exports.postAddUser = async (req, res) => {
     const username = req.body.username.trim();
 
-    const currentUser = await User.find({ username });
+    const results = await User.find({ username });
 
-    if (currentUser.length !== 0) {
+    if (results.length !== 0) {
         return res.status(201).json({
-            message: 'Such a user already exists!'
+            detail: 'Such a user already exists!'
         });
     }
 
@@ -25,7 +31,7 @@ exports.postAddUser = async (req, res) => {
 
         if (userData.is_private) {
             return res.status(201).json({
-                message: 'We do not work with private accounts!'
+                detail: 'We do not work with private accounts!'
             });
         }
 
@@ -36,24 +42,15 @@ exports.postAddUser = async (req, res) => {
         });
 
         user.save().then(() => res.status(201).json({
-            message: 'New user created!'
+            detail: 'success'
         }))
     } catch (err) {
         return res.status(201).json({
-            message: 'Something went wrong, check your username or try again later!'
+            detail: 'Something went wrong, check your username or try again later!'
         })
     }
 };
 
-exports.getUser = async (req, res) => {
-    const user = await User.find({ username: req.params.username });
-
-    if (user.length !== 0) {
-        return res.status(201).json(user);
-    }
-
-    return res.status(201).json([]);
-}
 
 // exports.index = (req, res) => {
 //     Contact.get((err, contacts) => {
