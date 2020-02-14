@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const instagramController = require('../controllers/instagram');
+const searchController = require('../controllers/search');
 
 router.get('/', (req, res) => res.json({ status: "API Its Working" }));
+
+router.get('/search', searchController.getResult)
 
 router.route('/instagram')
     .get(instagramController.getUsers)
